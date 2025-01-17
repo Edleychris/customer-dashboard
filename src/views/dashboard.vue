@@ -23,7 +23,6 @@
                 </div>
               </div>
             </div>
-
             <div
               class="flex lg:flex-row sm:flex-row gap-2 lg:mt-2 sm:my-0 my-2 md:mt-4 sm:mt-4 md:flex-nowrap flex-wrap"
             >
@@ -237,7 +236,6 @@ const customers = ref(store.customers);
 const isTableLoading = ref(false);
 const showAddCustomerModal = ref(false);
 const showViewModal = ref(false);
-const showEditModal = ref(false);
 const searchKeyword = ref("");
 const showAlert = ref(false);
 const alertMessage = ref("");
@@ -256,7 +254,7 @@ const displaySuccessAlert = (alertMsg, showAlertMsg, types) => {
 
 const hideAlert = () => (showAlert.value = false);
 const filteredCustomers = computed(() => {
-  let sortedCustomers = customers.value.filter((customer) => {
+  let sortedCustomers = store.customers.filter((customer) => {
     const searchTerm = searchKeyword.value.toLowerCase();
     const isActive = customer.is_active ? "active" : "inactive";
 
@@ -264,6 +262,7 @@ const filteredCustomers = computed(() => {
       customer.first_name.toLowerCase().includes(searchTerm) ||
       customer.surname.toLowerCase().includes(searchTerm) ||
       customer.email.toLowerCase().includes(searchTerm) ||
+      customer.state.toLowerCase().includes(searchTerm) ||
       (customer.phone &&
         customer.phone.toString().toLowerCase().includes(searchTerm)) ||
       isActive.toLowerCase().includes(searchTerm)
@@ -284,9 +283,6 @@ const filteredCustomers = computed(() => {
 });
 const deleteCustomer = (customerId) => {
   store.deleteCustomer(customerId);
-  customers.value = customers.value.filter(
-    (customer) => customer.id !== customerId
-  );
   displaySuccessAlert("Delete Successful", true, "success");
 };
 const updateCustomer = (id) => {

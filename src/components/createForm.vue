@@ -10,7 +10,7 @@
       >
         <button
           @click="closeModal"
-          class="absolute top-4 right-4 rounded-full text-gray-500 hover:text-gray-700 cursor-pointer"
+          class="absolute top-4 font-semibold text-[#080056] text-lg right-4 rounded-full  hover:text-gray-700 cursor-pointer"
         >
           x
         </button>
@@ -242,7 +242,6 @@ const formErrors = ref({
 });
 
 const validateForm = (event) => {
-  console.log(event);
   const input = event.target;
   const name = input.name;
 
@@ -297,7 +296,7 @@ const createCustomer = async () => {
     closeModal();
     return;
   } else {
-    customer.value.id = `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    customer.value.id = `${Date.now()}${Math.random().toString().slice(2, 5)}`;
     store.addCustomer(customer.value);
     emit("customerAdded");
     closeModal();
@@ -318,7 +317,6 @@ const closeModal = () => {
 onMounted(async () => {
   if (isEditing.value) {
     const customerData = store.getCustomerById(props.customerId);
-    console.log(customerData, "customer");
     if (customerData) {
       customer.value = { ...customerData };
     }
